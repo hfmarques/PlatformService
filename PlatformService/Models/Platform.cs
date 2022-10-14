@@ -1,5 +1,5 @@
 ﻿namespace PlatformService.Models;
-
+#nullable disable
 public class Platform
 {
     public int Id { get; set; }

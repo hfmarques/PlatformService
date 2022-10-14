@@ -19,6 +19,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    using var scope = app.Services.CreateScope();
+    await using var db = scope.ServiceProvider.GetService<AppDbContext>();
+    await db!.Database.MigrateAsync();
 }
 
 app.UseHttpsRedirection();
