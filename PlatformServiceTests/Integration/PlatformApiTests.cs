@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using PlatformService.Models;
+using PlatformService.Dto;
 
 namespace PlatformServiceTests.Integration;
 
@@ -21,22 +21,35 @@ public class PlatformApiTests
         Assert.False(getPlatformResponse.IsSuccessStatusCode);
         Assert.Equal(HttpStatusCode.NotFound, getPlatformResponse.StatusCode);
     }
+    
+    [Fact]
+    public async Task Post_WhenPostPlatform_ReturnsCreated()
+    {
+        using var postPlatformResponse = await _client.PostAsJsonAsync("/platform", 
+            new CreatePlatformDto()
+            {
+                Name = "Dot Net", Publisher = "Microsoft", Cost = 0
+            }
+        );
+        Assert.True(postPlatformResponse.IsSuccessStatusCode);
+        Assert.Equal(HttpStatusCode.Created,postPlatformResponse.StatusCode);
+    }
 
     [Fact]
     public async Task Post_WhenPostPlatform_GetCreatedPlatform()
     {
         using var postPlatformResponse = await _client.PostAsJsonAsync("/platform", 
-            new Platform
+            new CreatePlatformDto()
             {
-                Id = 0, Name = "Dot Net", Publisher = "Microsoft", Cost = "Free"
+                Name = "Dot Net", Publisher = "Microsoft", Cost = 0
             }
         );
         Assert.True(postPlatformResponse.IsSuccessStatusCode);
-        var postPlatformResult = await postPlatformResponse.Content.ReadFromJsonAsync<Platform>();
+        var postPlatformResult = await postPlatformResponse.Content.ReadFromJsonAsync<PlatformDto>();
 
         using var getPlatformResponse = await _client.GetAsync($"/platform/id/{postPlatformResult.Id}");
         Assert.True(getPlatformResponse.IsSuccessStatusCode);
-        var getPlatformResult = await getPlatformResponse.Content.ReadFromJsonAsync<Platform>();
+        var getPlatformResult = await getPlatformResponse.Content.ReadFromJsonAsync<PlatformDto>();
         
         Assert.Equal(postPlatformResult.Name, getPlatformResult.Name);
     }   
@@ -46,7 +59,7 @@ public class PlatformApiTests
     {
         using var getPlatformResponse = await _client.GetAsync("/platform");
         Assert.True(getPlatformResponse.IsSuccessStatusCode);
-        var getPlatformResult = await getPlatformResponse.Content.ReadFromJsonAsync<List<Platform>>();
+        var getPlatformResult = await getPlatformResponse.Content.ReadFromJsonAsync<List<PlatformDto>>();
         
         Assert.NotEmpty(getPlatformResult);
     }   

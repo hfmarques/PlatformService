@@ -1,6 +1,7 @@
-﻿namespace PlatformService.Models;
+﻿namespace PlatformService.Dto;
+
 #nullable disable
-public class Platform
+public class PlatformDto
 {
     public int Id { get; set; }
     public string Name { get; set; }

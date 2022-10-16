@@ -1,11 +1,16 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
+using PlatformService;
 using PlatformService.Data;
 using PlatformService.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
+var mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
 
 builder.Services.AddDbContext<AppDbContext>(o =>
     o.UseInMemoryDatabase("InMemory"));
