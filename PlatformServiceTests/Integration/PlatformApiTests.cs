@@ -1,16 +1,25 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net;
+using System.Net.Http.Json;
 using PlatformService.Models;
 
 namespace PlatformServiceTests.Integration;
 
 [Collection("Integration")]
-public class PostPlatform
+public class PlatformApiTests
 {
     private readonly HttpClient _client;
 
-    public PostPlatform()
+    public PlatformApiTests()
     {
         _client = new IntegrationFixture().Client;
+    }
+    
+    [Fact]
+    public async Task Get_WhenIdDoNotExists_ReturnsNotFound()
+    {
+        using var getPlatformResponse = await _client.GetAsync($"/platform/id/{999}");
+        Assert.False(getPlatformResponse.IsSuccessStatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, getPlatformResponse.StatusCode);
     }
 
     [Fact]
@@ -30,5 +39,15 @@ public class PostPlatform
         var getPlatformResult = await getPlatformResponse.Content.ReadFromJsonAsync<Platform>();
         
         Assert.Equal(postPlatformResult.Name, getPlatformResult.Name);
+    }   
+    
+    [Fact]
+    public async Task Get_WhenCalled_GetPlatforms()
+    {
+        using var getPlatformResponse = await _client.GetAsync("/platform");
+        Assert.True(getPlatformResponse.IsSuccessStatusCode);
+        var getPlatformResult = await getPlatformResponse.Content.ReadFromJsonAsync<List<Platform>>();
+        
+        Assert.NotEmpty(getPlatformResult);
     }   
 }
