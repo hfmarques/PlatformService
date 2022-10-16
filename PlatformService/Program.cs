@@ -1,33 +1,28 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using PlatformService.Data;
+using PlatformService.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddDbContext<AppDbContext>(o =>
-    o.UseInMemoryDatabase("InMemory"));
-builder.Services.AddScoped<IPlatformRepository, PlatformRepository>();
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<AppDbContext>(o =>
+    o.UseInMemoryDatabase("InMemory"));
+builder.Services.AddScoped<IPlatformRepository, PlatformRepository>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
-    using var scope = app.Services.CreateScope();
-    await using var db = scope.ServiceProvider.GetService<AppDbContext>();
-    await db!.Database.MigrateAsync();
+    app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "PlatformService v1"); });
+    // using var scope = app.Services.CreateScope();
+    // await using var db = scope.ServiceProvider.GetService<AppDbContext>();
+    // await db!.Database.MigrateAsync();
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
+app.PlatformApi();
 app.Run();
+
+public partial class Program { }
