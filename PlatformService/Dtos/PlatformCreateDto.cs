@@ -1,7 +1,7 @@
-﻿namespace PlatformService.Dto;
+﻿namespace PlatformService.Dtos;
 
 #nullable disable
-public class CreatePlatformDto
+public class PlatformCreateDto
 {
     public string Name { get; set; }
     public string Publisher { get; set; }

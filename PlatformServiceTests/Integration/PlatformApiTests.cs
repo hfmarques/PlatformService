@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using PlatformService.Dto;
+using PlatformService.Dtos;
 
 namespace PlatformServiceTests.Integration;
 
@@ -26,7 +26,7 @@ public class PlatformApiTests
     public async Task Post_WhenPostPlatform_ReturnsCreated()
     {
         using var postPlatformResponse = await _client.PostAsJsonAsync("/platform", 
-            new CreatePlatformDto()
+            new PlatformCreateDto()
             {
                 Name = "Dot Net", Publisher = "Microsoft", Cost = 0
             }
@@ -39,7 +39,7 @@ public class PlatformApiTests
     public async Task Post_WhenPostPlatform_GetCreatedPlatform()
     {
         using var postPlatformResponse = await _client.PostAsJsonAsync("/platform", 
-            new CreatePlatformDto()
+            new PlatformCreateDto()
             {
                 Name = "Dot Net", Publisher = "Microsoft", Cost = 0
             }

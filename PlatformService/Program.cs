@@ -1,16 +1,11 @@
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using PlatformService;
 using PlatformService.Data;
 using PlatformService.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
-var mapper = mapperConfig.CreateMapper();
-builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddDbContext<AppDbContext>(o =>
     o.UseInMemoryDatabase("InMemory"));
@@ -30,4 +25,9 @@ if (app.Environment.IsDevelopment())
 app.PlatformApi();
 app.Run();
 
-public partial class Program { }
+namespace PlatformService
+{
+    public partial class Program
+    {
+    }
+}
