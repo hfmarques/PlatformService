@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
+using PlatformService.Dto;
 using PlatformService.Dtos;
 
 namespace PlatformServiceTests.Integration;

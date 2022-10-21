@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PlatformService.Data;
 using PlatformService.Dto;
+using PlatformService.Dtos;
 using PlatformService.Models;
 
 namespace PlatformService.Extensions;
@@ -29,7 +30,7 @@ public static class PlatformsApi
         }).Produces<PlatformReadDto>()
             .Produces(StatusCodes.Status404NotFound);
         
-        webApplication.MapPost("/Platform/", (CreatePlatformDto createPlatformDto, IPlatformRepository repository, IMapper mapper) =>
+        webApplication.MapPost("/Platform/", (PlatformCreateDto createPlatformDto, IPlatformRepository repository, IMapper mapper) =>
         {
             var platform = mapper.Map<Platform>(createPlatformDto);
             repository.CreatePlatform(platform);
