@@ -45,11 +45,11 @@ public class PlatformApiTests
             }
         );
         Assert.True(postPlatformResponse.IsSuccessStatusCode);
-        var postPlatformResult = await postPlatformResponse.Content.ReadFromJsonAsync<PlatformDto>();
+        var postPlatformResult = await postPlatformResponse.Content.ReadFromJsonAsync<PlatformReadDto>();
 
         using var getPlatformResponse = await _client.GetAsync($"/platform/id/{postPlatformResult.Id}");
         Assert.True(getPlatformResponse.IsSuccessStatusCode);
-        var getPlatformResult = await getPlatformResponse.Content.ReadFromJsonAsync<PlatformDto>();
+        var getPlatformResult = await getPlatformResponse.Content.ReadFromJsonAsync<PlatformReadDto>();
         
         Assert.Equal(postPlatformResult.Name, getPlatformResult.Name);
     }   
@@ -59,7 +59,7 @@ public class PlatformApiTests
     {
         using var getPlatformResponse = await _client.GetAsync("/platform");
         Assert.True(getPlatformResponse.IsSuccessStatusCode);
-        var getPlatformResult = await getPlatformResponse.Content.ReadFromJsonAsync<List<PlatformDto>>();
+        var getPlatformResult = await getPlatformResponse.Content.ReadFromJsonAsync<List<PlatformReadDto>>();
         
         Assert.NotEmpty(getPlatformResult);
     }   

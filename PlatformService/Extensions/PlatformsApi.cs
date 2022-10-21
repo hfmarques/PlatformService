@@ -6,16 +6,16 @@ using PlatformService.Models;
 
 namespace PlatformService.Extensions;
 
-public static class PlatformsExtensions
+public static class PlatformsApi
 {
     public static void PlatformApi(this WebApplication webApplication)
     {
         webApplication.MapGet("/Platform/", (IPlatformRepository repository, IMapper mapper) =>
         {
             var platforms = repository.GetAll();
-            var platformsDto = mapper.Map<List<PlatformDto>>(platforms);
+            var platformsDto = mapper.Map<List<PlatformReadDto>>(platforms);
             return Results.Ok(platformsDto);
-        }).Produces<PlatformDto>();
+        }).Produces<PlatformReadDto>();
         
         webApplication.MapGet("/Platform/id/{id}", (int id, IPlatformRepository repository, IMapper mapper) =>
         {
@@ -23,10 +23,10 @@ public static class PlatformsExtensions
             if(platform is null)
                 return Results.NotFound();
 
-            var platformDto = mapper.Map<PlatformDto>(platform);
+            var platformDto = mapper.Map<PlatformReadDto>(platform);
             
             return Results.Ok(platformDto);
-        }).Produces<PlatformDto>()
+        }).Produces<PlatformReadDto>()
             .Produces(StatusCodes.Status404NotFound);
         
         webApplication.MapPost("/Platform/", (CreatePlatformDto createPlatformDto, IPlatformRepository repository, IMapper mapper) =>
@@ -34,7 +34,7 @@ public static class PlatformsExtensions
             var platform = mapper.Map<Platform>(createPlatformDto);
             repository.CreatePlatform(platform);
             repository.SaveChanges();
-            var platformDto = mapper.Map<PlatformDto>(platform);
+            var platformDto = mapper.Map<PlatformReadDto>(platform);
             return Results.Created($"/Platform/id/{platformDto.Id}", platformDto);
         }).Produces<Platform>(StatusCodes.Status201Created);
     }   

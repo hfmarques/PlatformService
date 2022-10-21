@@ -1,7 +1,7 @@
 ﻿namespace PlatformService.Dto;
 
 #nullable disable
-public class PlatformDto
+public class PlatformReadDto
 {
     public int Id { get; set; }
     public string Name { get; set; }

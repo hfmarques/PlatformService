@@ -9,6 +9,6 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<CreatePlatformDto, Platform>();
-        CreateMap<Platform, PlatformDto>();
+        CreateMap<Platform, PlatformReadDto>();
     }
 }
