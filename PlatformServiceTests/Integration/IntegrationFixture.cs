@@ -11,12 +11,12 @@ namespace PlatformServiceTests.Integration;
 
 public class IntegrationFixture: IDisposable, ICollectionFixture<IntegrationFixture>
 {
-    private WebApplicationFactory<Program> _application;
+    private WebApplicationFactory<PlatformService.Program> _application;
     public HttpClient Client { get; }
 
     public IntegrationFixture()
     {
-        _application = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
+        _application = new WebApplicationFactory<PlatformService.Program>().WithWebHostBuilder(builder =>
         {
             builder.ConfigureServices(services =>
             {
